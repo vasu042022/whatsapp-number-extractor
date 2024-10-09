@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Number Processor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        #copyButton {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Phone Number Processor</h1>
+
+    <div>
+        <label for="phoneNumbers">Enter phone numbers</label><br>
+        <textarea id="phoneNumbers" rows="4" cols="50"></textarea><br><br>
+        <button onclick="processNumbers()">Process Numbers</button>
+    </div>
+
+    <div class="container">
+        <table id="numberTable">
+            <thead>
+                <tr>
+                    <th>Phone Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Processed numbers will be displayed here -->
+            </tbody>
+        </table>
+
+        <button id="copyButton" onclick="copyToClipboard()">Copy to Clipboard</button>
+    </div>
+
+    <script>
+        function processNumbers() {
+            // Get input value and split it by commas
+            let input = document.getElementById('phoneNumbers').value;
+            let numbers = input.split(',').map(num => num.trim()).filter(num => num);
+
+            // Remove duplicates
+            numbers = [...new Set(numbers)];
+
+            // Display numbers in the table
+            let tableBody = document.querySelector('#numberTable tbody');
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            numbers.forEach(number => {
+                let row = document.createElement('tr');
+                let cell = document.createElement('td');
+                cell.textContent = number;
+                row.appendChild(cell);
+                tableBody.appendChild(row);
+            });
+        }
+
+        function copyToClipboard() {
+            let table = document.getElementById('numberTable');
+            let range = document.createRange();
+            range.selectNode(table);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand('copy');
+            window.getSelection().removeAllRanges();
+            alert('Copied to clipboard!');
+        }
+    </script>
+
+</body>
+</html>
